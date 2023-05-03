@@ -1,0 +1,74 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Weather app</title>
+  </head>
+  <body>
+    <div class="plugin">
+    <h1>Loze</h1>
+    <div id="weather"> 
+    </div>
+    </div>
+
+    <script>
+      // Récupère les informations météorologiques à partir de l'API OpenWeatherMap
+      const apiKey = 'API KEY';
+      const city = 'Paris';
+      const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`;
+
+      fetch(url)
+        .then(response => response.json())
+        .then(data => {
+          // Affiche les informations météorologiques dans la page HTML
+          const weatherDiv = document.getElementById('weather');
+          const description = data.weather[0].description;
+          const temperature = Math.floor(data.main.temp);
+          const feelsLike = data.main.feels_like;
+          const humidity = data.main.humidity;
+          const iconUrl = `https://openweathermap.org/img/w/${data.weather[0].icon}.png`;
+
+          // Affiche les informations météorologiques dans la page HTML
+          weatherDiv.innerHTML = `
+            <p><img src="${iconUrl}" alt="${description}"></p>
+            <p class="temp"> ${temperature}°C</p>
+
+          `;
+        })
+        .catch(error => {
+          // Affiche une erreur si la requête échoue
+          const weatherDiv = document.getElementById('weather');
+          weatherDiv.innerHTML = `<p>Erreur : ${error.message}</p>`;
+        });
+    </script>
+    <style>
+      body{
+        background-color: rgba(169, 146, 146, 0.422);
+        color: white;
+      }
+      h1{
+        margin: 0;
+        align-items: center;
+      }
+      #weather{ 
+display: flex;
+align-items: center;
+gap: 10px;
+height: 50px;
+      } 
+      .plugin{
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+        width: 100px;
+        height: 100px;
+      }
+
+      .temp{
+        font-size: 18px;
+      }
+      </style>
+  </body>
+</html>
+
